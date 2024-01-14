@@ -1,0 +1,75 @@
+<head>
+    <title> Todo list</title>
+</head>
+<body>
+    <input id="todo-title" type="text" />
+    <input id="todo-day" type="date"/>
+    <button onclick="addtodo()">add todo</button>
+    <div id="todo-list"></div>
+    <script>
+        //model
+        let todos = [
+            {title:'eat',duedate:'2021-03-03',id:'1'},
+            {title:'run',duedate:'2021-03-03',id:'2'},
+            {title:'jump',duedate:'2021-03-03',id:'3'}];
+        //creates todo
+        function createtodo(title,duedate){
+            const id = '' + new Date().getTime();
+            todos.push({
+                title:title,
+                duedate:duedate,
+                id:id});
+        }
+        //deletes todo
+        function removetodo(idtodelete){
+            todos = todos.filter(function(todo){
+                if(todo.id === idtodelete){
+                    return false;
+                }else{
+                    return true;
+                }
+            });
+        }
+        
+
+        function addtodo(){
+            const textbox = document.getElementById('todo-title');
+            const title = textbox.value;
+            const date = document.getElementById('todo-day');
+            const duedate = date.value;
+            createtodo(title,duedate);
+            render();
+        } 
+
+        function deletetodo(event){
+            const deletebutton = event.target;
+            const idtodelete= deletebutton.id;
+            removetodo(idtodelete);
+            render();
+        }
+
+        function render(){   
+            document.getElementById('todo-list').innerHTML ='';
+            //reset list
+            todos.forEach(function(todo){
+            const element = document.createElement('div');
+            element.innerText = todo.title + '' + todo.duedate;
+            const deletebutton = document.createElement('button');
+            deletebutton.innerText = 'Delete';
+            deletebutton.style = 'margin-left: 12px;';
+            deletebutton.onclick = deletetodo;
+            deletebutton.id = todo.id;
+            element.appendChild(deletebutton);
+            const todoList = document.getElementById('todo-list');
+            todoList.appendChild(element);     
+            });
+        }
+    render();
+    </script>
+</body>
+
+
+
+
+
+
